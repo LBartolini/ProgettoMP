@@ -6,23 +6,24 @@ import java.util.Objects;
 
 import model.Cliente;
 import model.Esercizio;
-import model.Palestra;
-import model.VisitorEsercizio;
+import model.PostazioneEsercizio;
 
 import java.util.Optional;
 
-public abstract class EsercizioSingolo implements Esercizio {
+public abstract class PostazioneEsercizioSingolo implements PostazioneEsercizio {
+	
+	private static int incrementale = 1;
 	
 	private Optional<Cliente> clienteAttuale;
 	private Collection<Cliente> clientiInAttesa;
-	private Palestra palestra;
-	private String nomeEsercizio;
+	private Esercizio esercizio;
+	private int id;
 
-	public EsercizioSingolo(Palestra palestra, String nomeEsercizio) {
-		this.palestra = palestra;
-		this.nomeEsercizio = nomeEsercizio;
+	protected PostazioneEsercizioSingolo(Esercizio esercizio) {
+		this.esercizio = esercizio;
 		clienteAttuale = Optional.empty();
 		clientiInAttesa = new HashSet<>();
+		this.id = incrementale++;
 	}
 
 	@Override
@@ -30,7 +31,7 @@ public abstract class EsercizioSingolo implements Esercizio {
 		clientiInAttesa.add(cliente);
 		
 		if(getPostiDisponibili()>0)
-			palestra.notifyClienteEsercizioLibero(this, cliente.getCodiceCliente());
+			cliente.notificaPostazioneLibera(getCodicePostazione());
 	}
 	
 	@Override
@@ -56,7 +57,7 @@ public abstract class EsercizioSingolo implements Esercizio {
 		if (!cliente.equals(clienteAttuale.get()))
 			return false;
 		clienteAttuale = Optional.empty();
-		clientiInAttesa.forEach(c -> palestra.notifyClienteEsercizioLibero(this, c.getCodiceCliente()));
+		clientiInAttesa.forEach(c -> c.notificaPostazioneLibera(getCodicePostazione()));
 		return true;
 	}
 
@@ -65,30 +66,27 @@ public abstract class EsercizioSingolo implements Esercizio {
 		return clienteAttuale.isEmpty() ? 0 : 1;
 	}
 
-	public String getNomeEsercizio() {
-		return nomeEsercizio;
+	@Override
+	public Esercizio getEsercizio() {
+		return esercizio;
+	}
+	
+	@Override
+	public String getCodicePostazione() {
+		return "S"+id;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(nomeEsercizio);
+		return Objects.hash(getCodicePostazione());
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		EsercizioSingolo other = (EsercizioSingolo) obj;
-		return Objects.equals(nomeEsercizio, other.nomeEsercizio);
-	}
-
-	@Override
-	public void acceptVisitor(VisitorEsercizio visitor) {
-		visitor.visitEsercizioSingolo(this);
+		
+		return false;
 	}
 	
 }

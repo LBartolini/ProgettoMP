@@ -1,12 +1,12 @@
 package model;
 
-import model.esercizi.EsercizioMultiplo;
-import model.esercizi.EsercizioSingolo;
+import model.esercizi.PostazioneEsercizioMultiplo;
+import model.esercizi.PostazioneEsercizioSingolo;
 
 public interface VisitorEsercizio {
 	
-	public void visitEsercizioSingolo(EsercizioSingolo esercizio);
+	public void visitEsercizioSingolo(PostazioneEsercizioSingolo esercizio);
 	
-	public void visitEsercizioMultiplo(EsercizioMultiplo esercizio);
+	public void visitEsercizioMultiplo(PostazioneEsercizioMultiplo esercizio);
 
 }

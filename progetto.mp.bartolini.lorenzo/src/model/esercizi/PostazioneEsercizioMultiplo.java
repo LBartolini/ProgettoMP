@@ -5,24 +5,22 @@ import java.util.Objects;
 
 import model.Cliente;
 import model.Esercizio;
-import model.Palestra;
-import model.VisitorEsercizio;
+import model.PostazioneEsercizio;
 
-public abstract class EsercizioMultiplo implements Esercizio {
+public abstract class PostazioneEsercizioMultiplo implements PostazioneEsercizio {
 	
+	private static int incrementale = 1;
 	
-	private Palestra palestra;
-	private String nomeEsercizio;
+	private Esercizio esercizio;
+	private int id;
 	private int maxClientiInContemporanea;
-	
 	private Collection<Cliente> clientiAttuali;
 	private Collection<Cliente> clientiInAttesa;
 
-	public EsercizioMultiplo(Palestra palestra, String nomeEsercizio, int maxClientiInContemporanea) {
-		this.palestra = palestra;
-		this.nomeEsercizio = nomeEsercizio;
+	protected PostazioneEsercizioMultiplo(Esercizio esercizio, int maxClientiInContemporanea) {
+		this.esercizio = esercizio;
 		this.maxClientiInContemporanea = maxClientiInContemporanea;
-		
+		this.id = incrementale++;
 	}
 
 	@Override
@@ -30,7 +28,7 @@ public abstract class EsercizioMultiplo implements Esercizio {
 		clientiInAttesa.add(cliente);
 		
 		if(getPostiDisponibili()>0)
-			palestra.notifyClienteEsercizioLibero(this, cliente.getCodiceCliente());
+			cliente.notificaPostazioneLibera(getCodicePostazione());
 	}
 	
 	@Override
@@ -58,7 +56,7 @@ public abstract class EsercizioMultiplo implements Esercizio {
 			return false;
 		
 		clientiAttuali.remove(cliente);
-		clientiInAttesa.forEach(c -> palestra.notifyClienteEsercizioLibero(this, c.getCodiceCliente()));
+		clientiInAttesa.forEach(c -> c.notificaPostazioneLibera(getCodicePostazione()));
 		return true;
 	}
 
@@ -66,29 +64,28 @@ public abstract class EsercizioMultiplo implements Esercizio {
 	public int getPostiDisponibili() {
 		return maxClientiInContemporanea - clientiAttuali.size();
 	}
+	
+	@Override
+	public Esercizio getEsercizio() {
+		return esercizio;
+	}
+	
+	@Override
+	public String getCodicePostazione() {
+		return "M"+id;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(nomeEsercizio);
+		return Objects.hash(getCodicePostazione());
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		EsercizioMultiplo other = (EsercizioMultiplo) obj;
-		return Objects.equals(nomeEsercizio, other.nomeEsercizio);
+		
+		return false;
 	}
-
-	@Override
-	public void acceptVisitor(VisitorEsercizio visitor) {
-		visitor.visitEsercizioMultiplo(this);
-	}
-	
-	
 
 }
