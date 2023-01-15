@@ -1,28 +1,25 @@
-package model.esercizi;
+package model.postazioni;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
 
 import model.Cliente;
-import model.Esercizio;
-import model.PostazioneEsercizio;
+import model.EsercizioInterface;
+import model.PostazioneInterface;
 
-import java.util.Optional;
-
-public abstract class PostazioneEsercizioSingolo implements PostazioneEsercizio {
+public class PostazioneMultipla implements PostazioneInterface {
 	
 	private static int incrementale = 1;
 	
-	private Optional<Cliente> clienteAttuale;
-	private Collection<Cliente> clientiInAttesa;
-	private Esercizio esercizio;
+	private EsercizioInterface esercizio;
 	private int id;
+	private int maxClientiInContemporanea;
+	private Collection<Cliente> clientiAttuali;
+	private Collection<Cliente> clientiInAttesa;
 
-	protected PostazioneEsercizioSingolo(Esercizio esercizio) {
+	protected PostazioneMultipla(EsercizioInterface esercizio, int maxClientiInContemporanea) {
 		this.esercizio = esercizio;
-		clienteAttuale = Optional.empty();
-		clientiInAttesa = new HashSet<>();
+		this.maxClientiInContemporanea = maxClientiInContemporanea;
 		this.id = incrementale++;
 	}
 
@@ -31,7 +28,7 @@ public abstract class PostazioneEsercizioSingolo implements PostazioneEsercizio 
 		clientiInAttesa.add(cliente);
 		
 		if(getPostiDisponibili()>0)
-			cliente.notificaPostazioneLibera(getCodicePostazione());
+			cliente.notificaPostazioneLibera(this);
 	}
 	
 	@Override
@@ -48,34 +45,36 @@ public abstract class PostazioneEsercizioSingolo implements PostazioneEsercizio 
 			return false;
 		
 		rimuoviPrenotazione(cliente);
-		clienteAttuale = Optional.of(cliente);
-		return true;	
+		clientiAttuali.add(cliente);
+		return true;
+		
 	}
 
 	@Override
 	public boolean rilascia(Cliente cliente) {
-		if (!cliente.equals(clienteAttuale.get()))
+		if(!clientiAttuali.contains(cliente))
 			return false;
-		clienteAttuale = Optional.empty();
-		clientiInAttesa.forEach(c -> c.notificaPostazioneLibera(getCodicePostazione()));
+		
+		clientiAttuali.remove(cliente);
+		clientiInAttesa.forEach(c -> c.notificaPostazioneLibera(this));
 		return true;
 	}
 
 	@Override
 	public int getPostiDisponibili() {
-		return clienteAttuale.isEmpty() ? 0 : 1;
+		return maxClientiInContemporanea - clientiAttuali.size();
 	}
-
+	
 	@Override
-	public Esercizio getEsercizio() {
+	public EsercizioInterface getEsercizio() {
 		return esercizio;
 	}
 	
 	@Override
 	public String getCodicePostazione() {
-		return "S"+id;
+		return "M"+id;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(getCodicePostazione());
@@ -88,5 +87,5 @@ public abstract class PostazioneEsercizioSingolo implements PostazioneEsercizio 
 		
 		return false;
 	}
-	
+
 }

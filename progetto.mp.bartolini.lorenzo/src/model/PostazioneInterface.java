@@ -1,6 +1,6 @@
 package model;
 
-public interface PostazioneEsercizio {
+public interface PostazioneInterface {
 	
 	public void prenota(Cliente cliente);
 	
@@ -8,12 +8,11 @@ public interface PostazioneEsercizio {
 	
 	public boolean occupa(Cliente cliente);
 	
-	// funge anche da notify
 	public boolean rilascia(Cliente cliente);
 	
 	public int getPostiDisponibili();
 	
-	public Esercizio getEsercizio();
+	public EsercizioInterface getEsercizio();
 	
 	public String getCodicePostazione();
 

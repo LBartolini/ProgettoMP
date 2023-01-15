@@ -3,15 +3,15 @@ package model.abbonamenti;
 import java.util.Collection;
 
 import model.Abbonamento;
-import model.Esercizio;
+import model.EsercizioInterface;
 
 public final class AbbonamentoDecorator implements Abbonamento {
 
 	private Abbonamento abbonamento;
-	private Collection<Esercizio> eserciziPermessi;
+	private Collection<EsercizioInterface> eserciziPermessi;
 	private int prezzo;
 	
-	public AbbonamentoDecorator(Abbonamento abbonamento, Collection<Esercizio> eserciziPermessi, int prezzo) {
+	public AbbonamentoDecorator(Abbonamento abbonamento, Collection<EsercizioInterface> eserciziPermessi, int prezzo) {
 		this.abbonamento = abbonamento;
 		this.eserciziPermessi = eserciziPermessi;
 		this.prezzo = prezzo;
@@ -23,7 +23,7 @@ public final class AbbonamentoDecorator implements Abbonamento {
 	}
 
 	@Override
-	public boolean isEsercizioPermesso(Esercizio esercizio) {
+	public boolean isEsercizioPermesso(EsercizioInterface esercizio) {
 		if(eserciziPermessi.contains(esercizio))
 			return true;
 		

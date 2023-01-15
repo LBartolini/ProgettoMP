@@ -1,7 +1,7 @@
 package model.abbonamenti;
 
 import model.Abbonamento;
-import model.Esercizio;
+import model.EsercizioInterface;
 
 public final class AbbonamentoVuoto implements Abbonamento {
 
@@ -11,7 +11,7 @@ public final class AbbonamentoVuoto implements Abbonamento {
 	}
 
 	@Override
-	public boolean isEsercizioPermesso(Esercizio esercizio) {
+	public boolean isEsercizioPermesso(EsercizioInterface esercizio) {
 		return false;
 	}
 
