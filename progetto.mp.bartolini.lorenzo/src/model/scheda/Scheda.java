@@ -1,4 +1,4 @@
-package model;
+package model.scheda;
 
 import java.util.Collection;
 import java.util.Optional;

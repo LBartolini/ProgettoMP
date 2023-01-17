@@ -1,8 +1,8 @@
 package model.palestra;
 
-import model.SchedaInterface;
 import model.abbonamenti.Abbonamento;
 import model.esercizi.EsercizioInterface;
+import model.scheda.SchedaInterface;
 
 public interface PalestraInterface {
 	

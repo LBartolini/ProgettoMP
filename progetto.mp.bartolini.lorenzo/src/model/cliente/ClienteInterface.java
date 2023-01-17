@@ -1,4 +1,4 @@
-package model;
+package model.cliente;
 
 import model.abbonamenti.Abbonamento;
 import model.postazioni.PostazioneInterface;
@@ -7,7 +7,7 @@ public interface ClienteInterface {
 
 	void notificaPostazioneLibera(PostazioneInterface postazione);
 
-	void occupaPostazione(String codicePostazione);
+	boolean occupaPostazione(String codicePostazione);
 
 	void rilasciaPostazione(String codicePostazione);
 	

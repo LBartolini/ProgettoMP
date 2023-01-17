@@ -1,4 +1,4 @@
-package model;
+package model.cliente;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -56,13 +56,16 @@ public final class Cliente implements ClienteInterface {
 	}
 	
 	@Override
-	public void occupaPostazione(String codicePostazione) {
+	public boolean occupaPostazione(String codicePostazione) {
 		PostazioneInterface postazioneDaOccupare = getPostazionefromCodice(codicePostazione).orElseThrow();
 		if(postazioneDaOccupare.occupa(this)) {
 			postazioneAttuale = Optional.of(postazioneDaOccupare);
-			postazioniPrenotate.remove(postazioneDaOccupare);
-			postazioniPrenotate.removeAll(getPostazioniFromEsercizio(postazioneDaOccupare.getEsercizio()));
+			//postazioniPrenotate.removeAll(getPostazioniFromEsercizio(postazioneDaOccupare.getEsercizio()));
+			getPostazioniFromEsercizio(postazioneDaOccupare.getEsercizio())
+				.forEach(postazione -> rimuoviPrenotazionePostazione(postazione.getCodicePostazione()));
+			return true;
 		}
+		return false;
 	}
 	
 	@Override
@@ -81,6 +84,7 @@ public final class Cliente implements ClienteInterface {
 	@Override
 	public void rilasciaPostazione(String codicePostazione) {
 		postazioneAttuale.orElseThrow().rilascia(this);
+		postazioneAttuale = Optional.empty();
 	}
 	
 	@Override

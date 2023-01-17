@@ -1,6 +1,6 @@
 package model.postazioni;
 
-import model.ClienteInterface;
+import model.cliente.ClienteInterface;
 import model.esercizi.EsercizioInterface;
 
 public interface PostazioneInterface {

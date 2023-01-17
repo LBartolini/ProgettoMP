@@ -2,8 +2,8 @@ package database;
 
 import java.util.Optional;
 
-import model.Cliente;
 import model.abbonamenti.Abbonamento;
+import model.cliente.Cliente;
 import model.palestra.PalestraInterface;
 
 public interface Database {

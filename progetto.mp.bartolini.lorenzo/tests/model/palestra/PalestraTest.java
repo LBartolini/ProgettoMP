@@ -8,11 +8,9 @@ import java.util.Collection;
 import org.junit.Test;
 
 import controller.ControllerMock;
-import model.Cliente;
-import model.ClienteInterface;
-import model.Scheda;
-import model.SchedaInterface;
 import model.abbonamenti.AbbonamentoMock;
+import model.cliente.Cliente;
+import model.cliente.ClienteInterface;
 import model.esecuzioni.EsecuzioneASerie;
 import model.esecuzioni.EsecuzioneEsercizioInterface;
 import model.esercizi.PancaPiana;
@@ -21,6 +19,8 @@ import model.esercizi.RematoreConManubri;
 import model.postazioni.PostazioneInterface;
 import model.postazioni.PostazioneMultipla;
 import model.postazioni.PostazioneSingola;
+import model.scheda.Scheda;
+import model.scheda.SchedaInterface;
 
 public class PalestraTest {
 
@@ -101,7 +101,6 @@ public class PalestraTest {
 			.containsExactlyInAnyOrderElementsOf(postazioniOk);
 		assertThat(postazioniPrenotateCliente)
 			.doesNotContainAnyElementsOf(postazioniNonOk);
-		
 	}
 	
 	@Test

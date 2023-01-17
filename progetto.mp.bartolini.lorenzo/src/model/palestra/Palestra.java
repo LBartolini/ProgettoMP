@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 
 import controller.Controller;
 import database.Database;
-import model.Cliente;
-import model.ClienteInterface;
-import model.SchedaInterface;
 import model.abbonamenti.Abbonamento;
+import model.cliente.Cliente;
+import model.cliente.ClienteInterface;
 import model.esercizi.EsercizioInterface;
 import model.postazioni.PostazioneInterface;
+import model.scheda.SchedaInterface;
 
 public final class Palestra implements PalestraInterface {
 	

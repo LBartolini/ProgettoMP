@@ -3,7 +3,7 @@ package model.postazioni;
 import java.util.Collection;
 import java.util.Objects;
 
-import model.ClienteInterface;
+import model.cliente.ClienteInterface;
 import model.esercizi.EsercizioInterface;
 
 public final class PostazioneMultipla implements PostazioneInterface {
@@ -14,7 +14,7 @@ public final class PostazioneMultipla implements PostazioneInterface {
 	private int id;
 	private int maxClientiInContemporanea;
 	private Collection<ClienteInterface> clientiAttuali;
-	private Collection<ClienteInterface> clientiInAttesa;
+	Collection<ClienteInterface> clientiInAttesa; // package private per fini di test
 
 	public PostazioneMultipla(EsercizioInterface esercizio, int maxClientiInContemporanea,
 			Collection<ClienteInterface> clientiAttuali, Collection<ClienteInterface> clientiInAttesa) {
@@ -47,6 +47,7 @@ public final class PostazioneMultipla implements PostazioneInterface {
 		if(!clientiInAttesa.contains(cliente))
 			return false;
 		
+		cliente.rimuoviPrenotazionePostazione(getCodicePostazione());
 		rimuoviPrenotazione(cliente);
 		clientiAttuali.add(cliente);
 		return true;
@@ -81,14 +82,6 @@ public final class PostazioneMultipla implements PostazioneInterface {
 	@Override
 	public int hashCode() {
 		return Objects.hash(getCodicePostazione());
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		
-		return false;
 	}
 
 }

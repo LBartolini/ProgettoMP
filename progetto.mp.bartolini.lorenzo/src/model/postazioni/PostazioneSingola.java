@@ -3,7 +3,7 @@ package model.postazioni;
 import java.util.Collection;
 import java.util.Objects;
 
-import model.ClienteInterface;
+import model.cliente.ClienteInterface;
 import model.esercizi.EsercizioInterface;
 
 import java.util.Optional;
@@ -13,7 +13,7 @@ public final class PostazioneSingola implements PostazioneInterface {
 	private static int incrementale = 1;
 	
 	private Optional<ClienteInterface> clienteAttuale;
-	private Collection<ClienteInterface> clientiInAttesa;
+	Collection<ClienteInterface> clientiInAttesa; // package private ai fini di test
 	private EsercizioInterface esercizio;
 	private int id;
 
@@ -45,6 +45,7 @@ public final class PostazioneSingola implements PostazioneInterface {
 		if(!clientiInAttesa.contains(cliente))
 			return false;
 		
+		cliente.rimuoviPrenotazionePostazione(getCodicePostazione());
 		rimuoviPrenotazione(cliente);
 		clienteAttuale = Optional.of(cliente);
 		return true;	
@@ -77,14 +78,6 @@ public final class PostazioneSingola implements PostazioneInterface {
 	@Override
 	public int hashCode() {
 		return Objects.hash(getCodicePostazione());
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		
-		return false;
 	}
 	
 }
