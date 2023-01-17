@@ -1,30 +1,39 @@
 package model.abbonamenti;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import model.Abbonamento;
-import model.EsercizioInterface;
+import model.esercizi.EsercizioInterface;
 
-public final class AbbonamentoDecorator implements Abbonamento {
+public abstract class AbbonamentoDecorator implements Abbonamento {
 
 	private Abbonamento abbonamento;
-	private Collection<EsercizioInterface> eserciziPermessi;
-	private int prezzo;
+	private double prezzo;
 	
-	public AbbonamentoDecorator(Abbonamento abbonamento, Collection<EsercizioInterface> eserciziPermessi, int prezzo) {
+	protected AbbonamentoDecorator(Abbonamento abbonamento, double prezzo) {
 		this.abbonamento = abbonamento;
-		this.eserciziPermessi = eserciziPermessi;
 		this.prezzo = prezzo;
 	}
 
 	@Override
-	public double getPrezzo() {
+	public final double getPrezzo() {
 		return prezzo + abbonamento.getPrezzo();
 	}
-
+	
 	@Override
-	public boolean isEsercizioPermesso(EsercizioInterface esercizio) {
-		if(eserciziPermessi.contains(esercizio))
+	public final Collection<EsercizioInterface> getEserciziPermessi(){
+		return Stream.concat(
+				abbonamento.getEserciziPermessi().stream(), 
+				getEserciziLocali().stream())
+			.collect(Collectors.toList());
+	}
+	
+	protected abstract Collection<EsercizioInterface> getEserciziLocali();
+	
+	@Override
+	public final boolean isEsercizioPermesso(EsercizioInterface esercizio) {
+		if(getEserciziPermessi().contains(esercizio))
 			return true;
 		
 		return abbonamento.isEsercizioPermesso(esercizio);

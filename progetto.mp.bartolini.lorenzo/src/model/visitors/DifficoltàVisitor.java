@@ -1,32 +1,38 @@
 package model.visitors;
 
-import model.VisitorEsercizioInterface;
-import model.esercizi.PancaPiana;
-import model.esercizi.RematoreConBilanciere;
-import model.esercizi.RematoreConManubri;
+import model.esecuzioni.EsecuzioneASerie;
+import model.esecuzioni.EsecuzioneATempo;
 
-public final class DifficoltàVisitor implements VisitorEsercizioInterface {
+public final class DifficoltàVisitor implements VisitorEsecuzione {
 
-	public DifficoltàVisitor() {
-		// TODO Auto-generated constructor stub
+	private double pesoCliente;
+	private double difficoltà;
+	private int nEsercizi;
+
+	public DifficoltàVisitor(double pesoCliente) {
+		this.pesoCliente = pesoCliente;
+		this.difficoltà = 0;
+		this.nEsercizi = 0;
 	}
 
 	@Override
-	public void visitPancaPiana(PancaPiana esercizio) {
-		// TODO Auto-generated method stub
-		
+	public void visitEsecuzioneASerie(EsecuzioneASerie esecuzione) {
+		nEsercizi++;
+		difficoltà += esecuzione.getPeso() 
+				* esecuzione.getSerie() 
+				* esecuzione.getRipetizioniPerSerie();
 	}
 
 	@Override
-	public void visitRematoreConManubri(RematoreConManubri esercizio) {
-		// TODO Auto-generated method stub
-		
+	public void visitEsecuzioneATempo(EsecuzioneATempo esecuzione) {
+		nEsercizi++;
+		difficoltà += esecuzione.getIntensità() 
+				* esecuzione.getMinuti() 
+				* pesoCliente;
 	}
 
-	@Override
-	public void visitRematoreConBilanciere(RematoreConBilanciere esercizio) {
-		// TODO Auto-generated method stub
-		
+	public double get() {
+		return difficoltà/nEsercizi;
 	}
 
 }

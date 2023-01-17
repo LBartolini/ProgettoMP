@@ -1,38 +1,33 @@
 package model.visitors;
 
-import model.esercizi.RematoreConBilanciere;
-import model.SchedaInterface;
-import model.VisitorEsercizioInterface;
-import model.esercizi.PancaPiana;
-import model.esercizi.RematoreConManubri;
+import model.esecuzioni.EsecuzioneASerie;
+import model.esecuzioni.EsecuzioneATempo;
 
-public final class CostoVisitor implements VisitorEsercizioInterface {
+public final class CostoVisitor implements VisitorEsecuzione {
 
 	private double costoTotale;
-	private SchedaInterface scheda;
 	
-	public CostoVisitor(SchedaInterface scheda) {
-		this.scheda = scheda;
+	public CostoVisitor() {
 		costoTotale = 0;
 	}
 	
-	public double getCostoTotale() {
+	public double get() {
 		return costoTotale;
 	}
 
 	@Override
-	public void visitPancaPiana(PancaPiana esercizio) {
-		costoTotale += 10 + esercizio.getCosto(scheda.getEsecuzioneEsercizio(esercizio).orElseThrow());		
+	public void visitEsecuzioneASerie(EsecuzioneASerie esecuzione) {
+		costoTotale += esecuzione.getSerie() 
+				* esecuzione.getRipetizioniPerSerie() 
+				* esecuzione.getEsercizio().getCostoPerRipetizione();
 	}
 
 	@Override
-	public void visitRematoreConManubri(RematoreConManubri esercizio) {
-		costoTotale += esercizio.getCosto(scheda.getEsecuzioneEsercizio(esercizio).orElseThrow());
+	public void visitEsecuzioneATempo(EsecuzioneATempo esecuzione) {
+		costoTotale += esecuzione.getMinuti()
+				* esecuzione.getEsercizio().getCostoAlMinuto();
 	}
 
-	@Override
-	public void visitRematoreConBilanciere(RematoreConBilanciere esercizio) {
-		costoTotale += 2 * esercizio.getCosto(scheda.getEsecuzioneEsercizio(esercizio).orElseThrow());
-	}
+	
 
 }

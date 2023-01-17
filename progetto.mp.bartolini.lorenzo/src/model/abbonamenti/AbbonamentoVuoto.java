@@ -1,7 +1,9 @@
 package model.abbonamenti;
 
-import model.Abbonamento;
-import model.EsercizioInterface;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import model.esercizi.EsercizioInterface;
 
 public final class AbbonamentoVuoto implements Abbonamento {
 
@@ -11,8 +13,13 @@ public final class AbbonamentoVuoto implements Abbonamento {
 	}
 
 	@Override
+	public Collection<EsercizioInterface> getEserciziPermessi() {
+		return new ArrayList<>();
+	}
+	
+	@Override
 	public boolean isEsercizioPermesso(EsercizioInterface esercizio) {
 		return false;
-	}
+	}	
 
 }

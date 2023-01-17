@@ -3,28 +3,31 @@ package model.postazioni;
 import java.util.Collection;
 import java.util.Objects;
 
-import model.Cliente;
-import model.EsercizioInterface;
-import model.PostazioneInterface;
+import model.ClienteInterface;
+import model.esercizi.EsercizioInterface;
 
-public class PostazioneMultipla implements PostazioneInterface {
+public final class PostazioneMultipla implements PostazioneInterface {
 	
 	private static int incrementale = 1;
 	
 	private EsercizioInterface esercizio;
 	private int id;
 	private int maxClientiInContemporanea;
-	private Collection<Cliente> clientiAttuali;
-	private Collection<Cliente> clientiInAttesa;
+	private Collection<ClienteInterface> clientiAttuali;
+	private Collection<ClienteInterface> clientiInAttesa;
 
-	protected PostazioneMultipla(EsercizioInterface esercizio, int maxClientiInContemporanea) {
+	public PostazioneMultipla(EsercizioInterface esercizio, int maxClientiInContemporanea,
+			Collection<ClienteInterface> clientiAttuali, Collection<ClienteInterface> clientiInAttesa) {
+		
 		this.esercizio = esercizio;
 		this.maxClientiInContemporanea = maxClientiInContemporanea;
+		this.clientiAttuali = clientiAttuali;
+		this.clientiInAttesa = clientiInAttesa;
 		this.id = incrementale++;
 	}
 
 	@Override
-	public void prenota(Cliente cliente) {
+	public void prenota(ClienteInterface cliente) {
 		clientiInAttesa.add(cliente);
 		
 		if(getPostiDisponibili()>0)
@@ -32,12 +35,12 @@ public class PostazioneMultipla implements PostazioneInterface {
 	}
 	
 	@Override
-	public void rimuoviPrenotazione(Cliente cliente) {
+	public void rimuoviPrenotazione(ClienteInterface cliente) {
 		clientiInAttesa.remove(cliente);
 	}
 
 	@Override
-	public boolean occupa(Cliente cliente) {
+	public boolean occupa(ClienteInterface cliente) {
 		if(getPostiDisponibili() == 0)
 			return false;
 		
@@ -51,7 +54,7 @@ public class PostazioneMultipla implements PostazioneInterface {
 	}
 
 	@Override
-	public boolean rilascia(Cliente cliente) {
+	public boolean rilascia(ClienteInterface cliente) {
 		if(!clientiAttuali.contains(cliente))
 			return false;
 		

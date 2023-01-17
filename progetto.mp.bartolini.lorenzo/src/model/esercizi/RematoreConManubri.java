@@ -1,13 +1,10 @@
 package model.esercizi;
 
-import model.EsecuzioneEsercizioInterface;
-import model.EsercizioInterface;
-import model.VisitorEsercizioInterface;
-
 public final class RematoreConManubri implements EsercizioInterface {
 
 	private static final String NOME = "RematoreConManubri";
-	private static final int COSTO_PER_RIPETIZIONE = 1;
+	private static final double COSTO_PER_RIPETIZIONE = 0.25;
+	private static final double COSTO_AL_MINUTO = 1;
 	
 	private static RematoreConManubri instance = null;
 
@@ -28,13 +25,13 @@ public final class RematoreConManubri implements EsercizioInterface {
 	}
 
 	@Override
-	public double getCosto(EsecuzioneEsercizioInterface esecuzione) {
-		return COSTO_PER_RIPETIZIONE * esecuzione.getNumeroSerie() * esecuzione.getNumeroRipetizioni();
+	public double getCostoPerRipetizione() {
+		return COSTO_PER_RIPETIZIONE;
 	}
-
+	
 	@Override
-	public void acceptVisitor(VisitorEsercizioInterface visitor) {
-		visitor.visitRematoreConManubri(this);
+	public double getCostoAlMinuto() {
+		return COSTO_AL_MINUTO;
 	}
-
+	
 }

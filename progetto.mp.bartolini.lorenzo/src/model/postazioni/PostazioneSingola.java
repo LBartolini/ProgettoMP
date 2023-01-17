@@ -1,33 +1,31 @@
 package model.postazioni;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
 
-import model.Cliente;
-import model.EsercizioInterface;
-import model.PostazioneInterface;
+import model.ClienteInterface;
+import model.esercizi.EsercizioInterface;
 
 import java.util.Optional;
 
-public class PostazioneSingola implements PostazioneInterface {
+public final class PostazioneSingola implements PostazioneInterface {
 	
 	private static int incrementale = 1;
 	
-	private Optional<Cliente> clienteAttuale;
-	private Collection<Cliente> clientiInAttesa;
+	private Optional<ClienteInterface> clienteAttuale;
+	private Collection<ClienteInterface> clientiInAttesa;
 	private EsercizioInterface esercizio;
 	private int id;
 
-	protected PostazioneSingola(EsercizioInterface esercizio) {
+	public PostazioneSingola(EsercizioInterface esercizio, Collection<ClienteInterface> clientiInAttesa) {
 		this.esercizio = esercizio;
 		clienteAttuale = Optional.empty();
-		clientiInAttesa = new HashSet<>();
+		this.clientiInAttesa = clientiInAttesa;
 		this.id = incrementale++;
 	}
 
 	@Override
-	public void prenota(Cliente cliente) {
+	public void prenota(ClienteInterface cliente) {
 		clientiInAttesa.add(cliente);
 		
 		if(getPostiDisponibili()>0)
@@ -35,12 +33,12 @@ public class PostazioneSingola implements PostazioneInterface {
 	}
 	
 	@Override
-	public void rimuoviPrenotazione(Cliente cliente) {
+	public void rimuoviPrenotazione(ClienteInterface cliente) {
 		clientiInAttesa.remove(cliente);
 	}
 
 	@Override
-	public boolean occupa(Cliente cliente) {
+	public boolean occupa(ClienteInterface cliente) {
 		if(getPostiDisponibili() == 0)
 			return false;
 		
@@ -53,7 +51,7 @@ public class PostazioneSingola implements PostazioneInterface {
 	}
 
 	@Override
-	public boolean rilascia(Cliente cliente) {
+	public boolean rilascia(ClienteInterface cliente) {
 		if (!cliente.equals(clienteAttuale.get()))
 			return false;
 		clienteAttuale = Optional.empty();
@@ -63,7 +61,7 @@ public class PostazioneSingola implements PostazioneInterface {
 
 	@Override
 	public int getPostiDisponibili() {
-		return clienteAttuale.isEmpty() ? 0 : 1;
+		return clienteAttuale.isEmpty() ? 1 : 0;
 	}
 
 	@Override

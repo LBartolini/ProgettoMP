@@ -3,6 +3,9 @@ package model;
 import java.util.Collection;
 import java.util.Optional;
 
+import model.esecuzioni.EsecuzioneEsercizioInterface;
+import model.esercizi.EsercizioInterface;
+
 public interface SchedaInterface {
 
 	public Collection<EsercizioInterface> getEsercizi();
@@ -11,6 +14,6 @@ public interface SchedaInterface {
 	
 	public double calcolaCosto();
 	
-	public int calcolaDifficoltà();
+	public double calcolaDifficoltà(double pesoCliente);
 	
 }

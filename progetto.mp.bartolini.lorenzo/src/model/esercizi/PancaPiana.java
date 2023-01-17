@@ -1,13 +1,11 @@
 package model.esercizi;
 
-import model.EsecuzioneEsercizioInterface;
-import model.EsercizioInterface;
-import model.VisitorEsercizioInterface;
-
 public final class PancaPiana implements EsercizioInterface {
 	
 	private static final String NOME = "PancaPiana";
-	private static final int COSTO_PER_RIPETIZIONE = 3;
+	private static final double COSTO_PER_RIPETIZIONE = 0.5;
+	private static final double COSTO_AL_MINUTO = 1.5;
+	
 	
 	private static PancaPiana instance = null;
 
@@ -28,13 +26,13 @@ public final class PancaPiana implements EsercizioInterface {
 	}
 
 	@Override
-	public double getCosto(EsecuzioneEsercizioInterface esecuzione) {
-		return COSTO_PER_RIPETIZIONE * esecuzione.getNumeroSerie() * esecuzione.getNumeroRipetizioni();
+	public double getCostoPerRipetizione() {
+		return COSTO_PER_RIPETIZIONE;
 	}
 
 	@Override
-	public void acceptVisitor(VisitorEsercizioInterface visitor) {
-		visitor.visitPancaPiana(this);
+	public double getCostoAlMinuto() {
+		return COSTO_AL_MINUTO;
 	}
-
+	
 }
