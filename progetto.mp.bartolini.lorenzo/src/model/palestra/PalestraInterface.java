@@ -22,7 +22,7 @@ public interface PalestraInterface {
 
 	public double getCostoScheda(SchedaInterface scheda);
 	
-	public double getDifficoltàScheda(SchedaInterface scheda, double pesoCliente);
+	public String getInfoScheda(SchedaInterface scheda);
 	
 	public double getPrezzoAbbonamento(Abbonamento abbonamento);
 	

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import model.esecuzioni.EsecuzioneEsercizioInterface;
 import model.esercizi.EsercizioInterface;
 import model.visitors.CostoVisitor;
-import model.visitors.DifficoltàVisitor;
+import model.visitors.InfoVisitor;
 
 public final class Scheda implements SchedaInterface {
 
@@ -41,8 +41,8 @@ public final class Scheda implements SchedaInterface {
 	}
 	
 	@Override
-	public double calcolaDifficoltà(double pesoCliente) {
-		DifficoltàVisitor visitor = new DifficoltàVisitor(pesoCliente);
+	public String getInfo() {
+		InfoVisitor visitor = new InfoVisitor();
 		
 		esecuzioni.forEach(esecuzione -> esecuzione.accept(visitor));
 		

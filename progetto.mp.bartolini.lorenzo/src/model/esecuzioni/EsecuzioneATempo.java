@@ -7,9 +7,9 @@ public final class EsecuzioneATempo implements EsecuzioneEsercizioInterface {
 
 	private EsercizioInterface esercizio;
 	private int minuti;
-	private int intensità;
+	private String intensità;
 
-	public EsecuzioneATempo(EsercizioInterface esercizio, int minuti, int intensità) {
+	public EsecuzioneATempo(EsercizioInterface esercizio, int minuti, String intensità) {
 		this.esercizio = esercizio;
 		this.minuti = minuti;
 		this.intensità = intensità;
@@ -24,7 +24,7 @@ public final class EsecuzioneATempo implements EsecuzioneEsercizioInterface {
 		return minuti;
 	}
 	
-	public int getIntensità() {
+	public String getIntensità() {
 		return intensità;
 	}
 

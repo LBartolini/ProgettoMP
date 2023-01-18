@@ -11,6 +11,7 @@ import model.esecuzioni.EsecuzioneASerie;
 import model.esecuzioni.EsecuzioneATempo;
 import model.esecuzioni.EsecuzioneEsercizioInterface;
 import model.esercizi.PancaPiana;
+import model.esercizi.RematoreConBilanciere;
 import model.esercizi.RematoreConManubri;
 
 public class SchedaTest {
@@ -26,7 +27,7 @@ public class SchedaTest {
 		assertThat(scheda.getEsercizi())
 			.containsExactlyInAnyOrder(PancaPiana.getInstance(), RematoreConManubri.getInstance());
 		
-		esecuzioni.add(new EsecuzioneATempo(PancaPiana.getInstance(), 0, 0));
+		esecuzioni.add(new EsecuzioneATempo(PancaPiana.getInstance(), 0, null));
 		
 		assertThat(scheda.getEsercizi())
 			.containsExactlyInAnyOrder(PancaPiana.getInstance(), RematoreConManubri.getInstance());
@@ -37,7 +38,7 @@ public class SchedaTest {
 		Collection<EsecuzioneEsercizioInterface> esecuzioni = new ArrayList<>();
 		EsecuzioneEsercizioInterface esecuzione1 = new EsecuzioneASerie(PancaPiana.getInstance(), 0, 0, 0);
 		EsecuzioneEsercizioInterface esecuzione2 = new EsecuzioneASerie(PancaPiana.getInstance(), 0, 0, 0);
-		EsecuzioneEsercizioInterface esecuzione3 = new EsecuzioneATempo(RematoreConManubri.getInstance(), 0, 0);
+		EsecuzioneEsercizioInterface esecuzione3 = new EsecuzioneATempo(RematoreConManubri.getInstance(), 0, null);
 		esecuzioni.add(esecuzione1);
 		esecuzioni.add(esecuzione2);
 		esecuzioni.add(esecuzione3);
@@ -55,7 +56,7 @@ public class SchedaTest {
 	public void testCalcoloCosto() {
 		Collection<EsecuzioneEsercizioInterface> esecuzioni = new ArrayList<>();
 		esecuzioni.add(new EsecuzioneASerie(PancaPiana.getInstance(), 4, 5, 70));
-		esecuzioni.add(new EsecuzioneATempo(RematoreConManubri.getInstance(), 20, 70));
+		esecuzioni.add(new EsecuzioneATempo(RematoreConManubri.getInstance(), 20, null));
 		
 		Scheda scheda = new Scheda(esecuzioni);
 		assertThat(scheda.calcolaCosto())
@@ -63,18 +64,17 @@ public class SchedaTest {
 	}
 	
 	@Test
-	public void testCalcoloDifficoltà() {
+	public void testGetInfoScheda() {
 		Collection<EsecuzioneEsercizioInterface> esecuzioni = new ArrayList<>();
 		esecuzioni.add(new EsecuzioneASerie(PancaPiana.getInstance(), 4, 5, 50));
-		esecuzioni.add(new EsecuzioneATempo(RematoreConManubri.getInstance(), 20, 10));
+		esecuzioni.add(new EsecuzioneASerie(RematoreConBilanciere.getInstance(), 4, 10, 30));
+		esecuzioni.add(new EsecuzioneATempo(RematoreConManubri.getInstance(), 20, "Media"));
 		
 		Scheda scheda = new Scheda(esecuzioni);
-		assertThat(scheda.calcolaDifficoltà(70))
-			.isEqualTo(7500); 
-		// difficoltà 
-		// primo esercizio 1000, 
-		// secondo esercizio 14000
-		// media -> 7500
+		assertThat(scheda.getInfo())
+			.isEqualTo("PancaPiana 4x5 (50.0kg)\n"
+					+ "RematoreConBilanciere 4x10 (30.0kg)\n"
+					+ "RematoreConManubri 20 minuti a Media intensità"); 
 	}
 
 }

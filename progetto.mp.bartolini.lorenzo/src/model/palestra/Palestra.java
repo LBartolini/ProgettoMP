@@ -86,8 +86,8 @@ public final class Palestra implements PalestraInterface {
 	}
 	
 	@Override
-	public double getDifficoltàScheda(SchedaInterface scheda, double pesoCliente) {
-		return scheda.calcolaDifficoltà(pesoCliente);
+	public String getInfoScheda(SchedaInterface scheda) {
+		return scheda.getInfo();
 	}
 
 	@Override

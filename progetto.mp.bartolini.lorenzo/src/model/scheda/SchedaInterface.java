@@ -12,7 +12,7 @@ public interface SchedaInterface {
 	public Collection<EsecuzioneEsercizioInterface> getEsecuzioniFromEsercizio(EsercizioInterface esercizio);
 	
 	public double calcolaCosto();
-	
-	public double calcolaDifficoltà(double pesoCliente);
+
+	public String getInfo();
 	
 }
