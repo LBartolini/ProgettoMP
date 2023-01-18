@@ -120,5 +120,49 @@ public class PostazioneTest {
 		assertThat(postazione.clientiInAttesa)
 		.containsExactlyInAnyOrder(cliente2);
 	}
+	
+	@Test
+	public void testRilascioSingola() {
+		PostazioneSingola postazione = new PostazioneSingola(PancaPiana.getInstance(), new ArrayList<>());
+		ControllerMock controller = new ControllerMock();
+		Palestra p = new Palestra(null, controller, null, null, null);
+
+		Cliente cliente = new Cliente(p, null, "A", new ArrayList<>(), null, null, 0, 0);
+		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null, 0, 0);
+		Cliente cliente3 = new Cliente(p, null, "C", new ArrayList<>(), null, null, 0, 0);
+		
+		cliente.prenotaPostazione(postazione);
+		cliente2.prenotaPostazione(postazione);
+		cliente3.prenotaPostazione(postazione);
+		
+		cliente.occupaPostazione(postazione.getCodicePostazione());
+		cliente.rilasciaPostazione(postazione.getCodicePostazione());
+		
+		assertThat(controller.notifiche)
+			.isEqualTo(5);
+	}
+	
+	@Test
+	public void testRilascioMultipla() {
+		PostazioneMultipla postazione = new PostazioneMultipla(PancaPiana.getInstance(), 2, new ArrayList<>(), new ArrayList<>());
+		ControllerMock controller = new ControllerMock();
+		Palestra p = new Palestra(null, controller, null, null, null);
+
+		Cliente cliente = new Cliente(p, null, "A", new ArrayList<>(), null, null, 0, 0);
+		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null, 0, 0);
+		Cliente cliente3 = new Cliente(p, null, "C", new ArrayList<>(), null, null, 0, 0);
+		
+		cliente.prenotaPostazione(postazione);
+		cliente2.prenotaPostazione(postazione);
+		cliente3.prenotaPostazione(postazione);
+		
+		cliente.occupaPostazione(postazione.getCodicePostazione());
+		cliente2.occupaPostazione(postazione.getCodicePostazione());
+		
+		cliente.rilasciaPostazione(postazione.getCodicePostazione());
+		
+		assertThat(controller.notifiche)
+			.isEqualTo(4);
+	}
 
 }

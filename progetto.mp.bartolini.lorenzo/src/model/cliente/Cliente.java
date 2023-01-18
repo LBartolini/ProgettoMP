@@ -60,7 +60,6 @@ public final class Cliente implements ClienteInterface {
 		PostazioneInterface postazioneDaOccupare = getPostazionefromCodice(codicePostazione).orElseThrow();
 		if(postazioneDaOccupare.occupa(this)) {
 			postazioneAttuale = Optional.of(postazioneDaOccupare);
-			//postazioniPrenotate.removeAll(getPostazioniFromEsercizio(postazioneDaOccupare.getEsercizio()));
 			getPostazioniFromEsercizio(postazioneDaOccupare.getEsercizio())
 				.forEach(postazione -> rimuoviPrenotazionePostazione(postazione.getCodicePostazione()));
 			return true;
@@ -70,8 +69,10 @@ public final class Cliente implements ClienteInterface {
 	
 	@Override
 	public void prenotaPostazione(PostazioneInterface postazione) {
-		postazioniPrenotate.add(postazione);
-		postazione.prenota(this);
+		if(!postazioniPrenotate.contains(postazione)) {
+			postazioniPrenotate.add(postazione);
+			postazione.prenota(this);
+		}	
 	}
 
 	@Override

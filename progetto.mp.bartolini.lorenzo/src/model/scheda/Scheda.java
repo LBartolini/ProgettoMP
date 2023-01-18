@@ -1,7 +1,6 @@
 package model.scheda;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import model.esecuzioni.EsecuzioneEsercizioInterface;
@@ -17,10 +16,6 @@ public final class Scheda implements SchedaInterface {
 		this.esecuzioni = esecuzioni;
 	}
 	
-	public void addEsecuzione(EsecuzioneEsercizioInterface e) {
-		esecuzioni.add(e);
-	}
-	
 	@Override
 	public Collection<EsercizioInterface> getEsercizi() {
 		return esecuzioni.stream()
@@ -30,10 +25,10 @@ public final class Scheda implements SchedaInterface {
 	}
 
 	@Override
-	public Optional<EsecuzioneEsercizioInterface> getEsecuzioneEsercizio(EsercizioInterface esercizio) {
+	public Collection<EsecuzioneEsercizioInterface> getEsecuzioniFromEsercizio(EsercizioInterface esercizio) {
 		return esecuzioni.stream()
 				.filter(esecuzione -> esecuzione.getEsercizio().equals(esercizio))
-				.findAny();
+				.collect(Collectors.toList());
 	}
 
 	@Override

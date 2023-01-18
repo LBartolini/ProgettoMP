@@ -53,8 +53,11 @@ public final class PostazioneSingola implements PostazioneInterface {
 
 	@Override
 	public boolean rilascia(ClienteInterface cliente) {
-		if (!cliente.equals(clienteAttuale.get()))
+		if(clienteAttuale.isEmpty())
 			return false;
+		if (!clienteAttuale.orElseThrow().equals(cliente))
+			return false;
+		
 		clienteAttuale = Optional.empty();
 		clientiInAttesa.forEach(c -> c.notificaPostazioneLibera(this));
 		return true;
