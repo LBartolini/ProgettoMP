@@ -5,26 +5,26 @@ import model.postazioni.PostazioneInterface;
 
 public interface ClienteInterface {
 
-	void notificaPostazioneLibera(PostazioneInterface postazione);
+	public void notificaPostazioneLibera(PostazioneInterface postazione);
 
-	boolean occupaPostazione(String codicePostazione);
+	public boolean occupaPostazione(String codicePostazione);
 
-	void rilasciaPostazione(String codicePostazione);
+	public void rilasciaPostazione(String codicePostazione);
 	
-	void prenotaPostazione(PostazioneInterface postazione);
+	public void prenotaPostazione(PostazioneInterface postazione);
 	
-	void rimuoviPrenotazionePostazione(String codicePostazione);
+	public void rimuoviPrenotazionePostazione(String codicePostazione);
 
-	String getCodiceCliente();
+	public String getCodiceCliente();
 
-	Abbonamento getAbbonamento();
+	public Abbonamento getAbbonamento();
 
-	String getNome();
+	public String getNome();
 
-	String getCognome();
+	public String getCognome();
 
-	int getEtà();
+	public int getEtà();
 
-	double getPeso();
+	public double getPeso();
 
 }

@@ -6,7 +6,6 @@ public final class PancaPiana implements EsercizioInterface {
 	private static final double COSTO_PER_RIPETIZIONE = 0.5;
 	private static final double COSTO_AL_MINUTO = 1.5;
 	
-	
 	private static PancaPiana instance = null;
 
 	public static PancaPiana getInstance() {
