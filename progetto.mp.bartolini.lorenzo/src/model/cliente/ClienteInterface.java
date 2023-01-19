@@ -23,7 +23,7 @@ public interface ClienteInterface {
 
 	public String getCognome();
 
-	public int getEtà();
+	public int getEta();
 
 	public double getPeso();
 

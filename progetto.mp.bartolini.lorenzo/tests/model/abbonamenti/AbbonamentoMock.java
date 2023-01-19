@@ -1,5 +1,6 @@
 package model.abbonamenti;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import model.esercizi.EsercizioInterface;
@@ -19,7 +20,7 @@ public class AbbonamentoMock implements Abbonamento {
 
 	@Override
 	public Collection<EsercizioInterface> getEserciziPermessi() {
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public final class InfoVisitor implements VisitorEsecuzione {
 	@Override
 	public void visitEsecuzioneATempo(EsecuzioneATempo esecuzione) {
 		info.append(esecuzione.getEsercizio().getNomeEsercizio()+" "
-			+esecuzione.getMinuti()+" minuti a "+esecuzione.getIntensità()+" intensità"
+			+esecuzione.getMinuti()+" minuti a "+esecuzione.getIntensita()+" intensità"
 			+"\n");
 	}
 

@@ -14,7 +14,7 @@ public final class Cliente implements ClienteInterface {
 	
 	private String codiceCliente;
 	private String nome, cognome;
-	private int età;
+	private int eta;
 	private double peso;
 	private PalestraInterface palestra;
 	private Abbonamento abbonamento;
@@ -25,7 +25,7 @@ public final class Cliente implements ClienteInterface {
 			Abbonamento abbonamento, 
 			String codiceCliente, 
 			Collection<PostazioneInterface> postazioniPrenotate,
-			String nome, String cognome, int età, double peso) {
+			String nome, String cognome, int eta, double peso) {
 		
 		this.palestra = palestra;
 		this.abbonamento = abbonamento;
@@ -34,7 +34,7 @@ public final class Cliente implements ClienteInterface {
 		this.postazioneAttuale = Optional.empty();
 		this.nome = nome;
 		this.cognome = cognome;
-		this.età = età;
+		this.eta = eta;
 		this.peso = peso;
 	}
 
@@ -109,8 +109,8 @@ public final class Cliente implements ClienteInterface {
 	}
 
 	@Override
-	public int getEtà() {
-		return età;
+	public int getEta() {
+		return eta;
 	}
 
 	@Override
