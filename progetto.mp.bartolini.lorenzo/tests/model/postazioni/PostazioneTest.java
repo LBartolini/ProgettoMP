@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import controller.ControllerMock;
-import model.cliente.Cliente;
+import model.Cliente;
+import model.Palestra;
 import model.esercizi.PancaPiana;
-import model.palestra.Palestra;
 
 public class PostazioneTest {
 
@@ -19,13 +19,15 @@ public class PostazioneTest {
 		PostazioneSingola postazione2 = new PostazioneSingola(PancaPiana.getInstance(), new ArrayList<>());
 		Palestra p = new Palestra(null, new ControllerMock(), null, null, null);
 
-		Cliente cliente = new Cliente(p, null, "A", new ArrayList<>(), null, null, 0, 0);
+		Cliente cliente = new Cliente(p, null, "A", new ArrayList<>(), null, null);
 		
 		cliente.prenotaPostazione(postazione);
 		cliente.prenotaPostazione(postazione2);
 		assertThat(cliente.occupaPostazione(postazione.getCodicePostazione()))
 			.isTrue();
 		
+		assertThat(postazione.clienteAttuale.orElse(null))
+			.isEqualTo(cliente);
 		assertThat(postazione.getPostiDisponibili())
 			.isEqualTo(0);
 		assertThat(postazione.clientiInAttesa)
@@ -39,8 +41,8 @@ public class PostazioneTest {
 		PostazioneSingola postazione = new PostazioneSingola(PancaPiana.getInstance(), new ArrayList<>());
 		Palestra p = new Palestra(null, new ControllerMock(), null, null, null);
 		
-		Cliente cliente1 = new Cliente(p, null, "A", new ArrayList<>(), null, null, 0, 0);
-		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null, 0, 0);
+		Cliente cliente1 = new Cliente(p, null, "A", new ArrayList<>(), null, null);
+		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null);
 		
 		cliente1.prenotaPostazione(postazione);
 		cliente2.prenotaPostazione(postazione);
@@ -52,6 +54,8 @@ public class PostazioneTest {
 		
 		assertThat(cliente2.occupaPostazione(postazione.getCodicePostazione()))
 			.isFalse();
+		assertThat(postazione.clienteAttuale.orElse(null))
+			.isEqualTo(cliente1);
 	}
 	
 	@Test
@@ -62,8 +66,8 @@ public class PostazioneTest {
 				new ArrayList<>(), new ArrayList<>());
 		Palestra p = new Palestra(null, new ControllerMock(), null, null, null);
 
-		Cliente cliente = new Cliente(p, null, "A", new ArrayList<>(), null, null, 0, 0);
-		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null, 0, 0);
+		Cliente cliente = new Cliente(p, null, "A", new ArrayList<>(), null, null);
+		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null);
 		
 		cliente.prenotaPostazione(postazione);
 		cliente.prenotaPostazione(postazione2);
@@ -77,6 +81,8 @@ public class PostazioneTest {
 		
 		assertThat(cliente.occupaPostazione(postazione.getCodicePostazione()))
 			.isTrue();
+		assertThat(postazione.clientiAttuali)
+			.contains(cliente);
 		assertThat(postazione.getPostiDisponibili())
 			.isEqualTo(1);
 		assertThat(postazione.clientiInAttesa)
@@ -84,6 +90,8 @@ public class PostazioneTest {
 		
 		assertThat(cliente2.occupaPostazione(postazione.getCodicePostazione()))
 			.isTrue();
+		assertThat(postazione.clientiAttuali)
+			.containsExactly(cliente, cliente2);
 		assertThat(postazione.getPostiDisponibili())
 			.isEqualTo(0);
 		
@@ -99,8 +107,8 @@ public class PostazioneTest {
 				new ArrayList<>(), new ArrayList<>());
 		Palestra p = new Palestra(null, new ControllerMock(), null, null, null);
 
-		Cliente cliente = new Cliente(p, null, "A", new ArrayList<>(), null, null, 0, 0);
-		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null, 0, 0);
+		Cliente cliente = new Cliente(p, null, "A", new ArrayList<>(), null, null);
+		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null);
 		
 		cliente.prenotaPostazione(postazione);
 		cliente2.prenotaPostazione(postazione);
@@ -117,8 +125,10 @@ public class PostazioneTest {
 		
 		assertThat(cliente2.occupaPostazione(postazione.getCodicePostazione()))
 			.isFalse();
+		assertThat(postazione.clientiAttuali)
+			.containsExactly(cliente);
 		assertThat(postazione.clientiInAttesa)
-		.containsExactlyInAnyOrder(cliente2);
+			.containsExactlyInAnyOrder(cliente2);
 	}
 	
 	@Test
@@ -127,9 +137,9 @@ public class PostazioneTest {
 		ControllerMock controller = new ControllerMock();
 		Palestra p = new Palestra(null, controller, null, null, null);
 
-		Cliente cliente = new Cliente(p, null, "A", new ArrayList<>(), null, null, 0, 0);
-		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null, 0, 0);
-		Cliente cliente3 = new Cliente(p, null, "C", new ArrayList<>(), null, null, 0, 0);
+		Cliente cliente = new Cliente(p, null, "A", new ArrayList<>(), null, null);
+		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null);
+		Cliente cliente3 = new Cliente(p, null, "C", new ArrayList<>(), null, null);
 		
 		cliente.prenotaPostazione(postazione);
 		cliente2.prenotaPostazione(postazione);
@@ -138,6 +148,8 @@ public class PostazioneTest {
 		cliente.occupaPostazione(postazione.getCodicePostazione());
 		cliente.rilasciaPostazione(postazione.getCodicePostazione());
 		
+		assertThat(postazione.clienteAttuale.orElse(null))
+			.isNull();
 		assertThat(controller.notifiche)
 			.isEqualTo(5);
 	}
@@ -148,9 +160,9 @@ public class PostazioneTest {
 		ControllerMock controller = new ControllerMock();
 		Palestra p = new Palestra(null, controller, null, null, null);
 
-		Cliente cliente = new Cliente(p, null, "A", new ArrayList<>(), null, null, 0, 0);
-		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null, 0, 0);
-		Cliente cliente3 = new Cliente(p, null, "C", new ArrayList<>(), null, null, 0, 0);
+		Cliente cliente = new Cliente(p, null, "A", new ArrayList<>(), null, null);
+		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null);
+		Cliente cliente3 = new Cliente(p, null, "C", new ArrayList<>(), null, null);
 		
 		cliente.prenotaPostazione(postazione);
 		cliente2.prenotaPostazione(postazione);
@@ -161,6 +173,8 @@ public class PostazioneTest {
 		
 		cliente.rilasciaPostazione(postazione.getCodicePostazione());
 		
+		assertThat(postazione.clientiAttuali)
+			.containsExactly(cliente2);
 		assertThat(controller.notifiche)
 			.isEqualTo(4);
 	}

@@ -1,6 +1,6 @@
 package model.esercizi;
 
-public final class RematoreConBilanciere implements EsercizioInterface {
+public final class RematoreConBilanciere implements Esercizio {
 
 	private static final String NOME = "RematoreConBilanciere";
 	private static final double COSTO_PER_RIPETIZIONE = 0.4;

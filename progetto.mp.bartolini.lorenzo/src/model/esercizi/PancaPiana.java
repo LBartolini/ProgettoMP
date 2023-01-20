@@ -1,6 +1,6 @@
 package model.esercizi;
 
-public final class PancaPiana implements EsercizioInterface {
+public final class PancaPiana implements Esercizio {
 	
 	private static final String NOME = "PancaPiana";
 	private static final double COSTO_PER_RIPETIZIONE = 0.5;

@@ -1,37 +1,34 @@
-package model.scheda;
+package model;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import model.esecuzioni.EsecuzioneEsercizioInterface;
-import model.esercizi.EsercizioInterface;
+import model.esecuzioni.Esecuzione;
+import model.esercizi.Esercizio;
 import model.visitors.CostoVisitor;
 import model.visitors.InfoVisitor;
 
-public final class Scheda implements SchedaInterface {
+public final class Scheda {
 
-	private Collection<EsecuzioneEsercizioInterface> esecuzioni;
+	private Collection<Esecuzione> esecuzioni;
 	
-	public Scheda(Collection<EsecuzioneEsercizioInterface> esecuzioni) {
+	public Scheda(Collection<Esecuzione> esecuzioni) {
 		this.esecuzioni = esecuzioni;
 	}
 	
-	@Override
-	public Collection<EsercizioInterface> getEsercizi() {
+	public Collection<Esercizio> getEsercizi() {
 		return esecuzioni.stream()
 				.map(esecuzione -> esecuzione.getEsercizio())
 				.distinct()
 				.collect(Collectors.toList());
 	}
 
-	@Override
-	public Collection<EsecuzioneEsercizioInterface> getEsecuzioniFromEsercizio(EsercizioInterface esercizio) {
+	public Collection<Esecuzione> getEsecuzioniFromEsercizio(Esercizio esercizio) {
 		return esecuzioni.stream()
 				.filter(esecuzione -> esecuzione.getEsercizio().equals(esercizio))
 				.collect(Collectors.toList());
 	}
 
-	@Override
 	public double calcolaCosto() {
 		CostoVisitor visitor = new CostoVisitor();
 		
@@ -40,7 +37,6 @@ public final class Scheda implements SchedaInterface {
 		return visitor.get();
 	}
 	
-	@Override
 	public String getInfo() {
 		InfoVisitor visitor = new InfoVisitor();
 		

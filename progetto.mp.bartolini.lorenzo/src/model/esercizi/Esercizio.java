@@ -1,6 +1,6 @@
 package model.esercizi;
 
-public interface EsercizioInterface {
+public interface Esercizio {
 	
 	public String getNomeEsercizio();
 	

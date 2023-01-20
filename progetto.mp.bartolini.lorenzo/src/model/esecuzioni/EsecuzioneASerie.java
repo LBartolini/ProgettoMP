@@ -1,16 +1,16 @@
 package model.esecuzioni;
 
-import model.esercizi.EsercizioInterface;
+import model.esercizi.Esercizio;
 import model.visitors.VisitorEsecuzione;
 
-public final class EsecuzioneASerie implements EsecuzioneEsercizioInterface {
+public final class EsecuzioneASerie implements Esecuzione {
 
 	private int serie;
 	private int ripetizioniPerSerie;
-	private EsercizioInterface esercizio;
+	private Esercizio esercizio;
 	private double peso;
 
-	public EsecuzioneASerie(EsercizioInterface esercizio, int serie, int ripetizioniPerSerie, double peso) {
+	public EsecuzioneASerie(Esercizio esercizio, int serie, int ripetizioniPerSerie, double peso) {
 		this.esercizio = esercizio;
 		this.serie = serie;
 		this.ripetizioniPerSerie = ripetizioniPerSerie;
@@ -18,7 +18,7 @@ public final class EsecuzioneASerie implements EsecuzioneEsercizioInterface {
 	}
 
 	@Override
-	public EsercizioInterface getEsercizio() {
+	public Esercizio getEsercizio() {
 		return esercizio;
 	}
 

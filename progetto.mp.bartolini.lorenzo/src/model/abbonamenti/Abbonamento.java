@@ -2,14 +2,14 @@ package model.abbonamenti;
 
 import java.util.Collection;
 
-import model.esercizi.EsercizioInterface;
+import model.esercizi.Esercizio;
 
 public interface Abbonamento {
 	
 	public double getPrezzo();
 	
-	public Collection<EsercizioInterface> getEserciziPermessi(); 
+	public Collection<Esercizio> getEserciziPermessi(); 
 	
-	public boolean isEsercizioPermesso(EsercizioInterface esercizio);
+	public boolean isEsercizioPermesso(Esercizio esercizio);
 	
 }

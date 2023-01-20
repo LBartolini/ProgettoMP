@@ -1,4 +1,4 @@
-package model.palestra;
+package model;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -7,25 +7,22 @@ import java.util.stream.Collectors;
 import controller.Controller;
 import database.Database;
 import model.abbonamenti.Abbonamento;
-import model.cliente.Cliente;
-import model.cliente.ClienteInterface;
-import model.esercizi.EsercizioInterface;
-import model.postazioni.PostazioneInterface;
-import model.scheda.SchedaInterface;
+import model.esercizi.Esercizio;
+import model.postazioni.Postazione;
 
-public final class Palestra implements PalestraInterface {
+public final class Palestra {
 	
 	private String nome;
 	private Controller controller;
 	private Database database;
-	private Collection<PostazioneInterface> postazioni;
-	private Collection<ClienteInterface> clientiInPalestra;
+	private Collection<Postazione> postazioni;
+	private Collection<Cliente> clientiInPalestra;
 
 	public Palestra(String nome,
 			Controller controller, 
 			Database database, 
-			Collection<PostazioneInterface> postazioni, 
-			Collection<ClienteInterface> clientiInPalestra) {
+			Collection<Postazione> postazioni, 
+			Collection<Cliente> clientiInPalestra) {
 		
 		this.nome = nome;
 		this.postazioni = postazioni;
@@ -35,23 +32,22 @@ public final class Palestra implements PalestraInterface {
 	}
 	
 	// package-private a fini di test
-	Optional<ClienteInterface> getClienteFromCodice(String codiceCliente) {
+	Optional<Cliente> getClienteFromCodice(String codiceCliente) {
 		return clientiInPalestra.stream()
 			.filter(cliente -> cliente.getCodiceCliente().equals(codiceCliente))
 			.findAny();
 	}
 	
 	// package-private a fini di test
-	Collection<PostazioneInterface> getPostazioniFromEsercizio(EsercizioInterface esercizio){
+	Collection<Postazione> getPostazioniFromEsercizio(Esercizio esercizio){
 		return postazioni.stream()
 				.filter(postazione -> postazione.getEsercizio().equals(esercizio))
 				.collect(Collectors.toList());
 	}
 
-	@Override
-	public boolean prenotaEserciziConScheda(SchedaInterface scheda, String codiceCliente) {
-		Collection<EsercizioInterface> esercizi = scheda.getEsercizi();
-		ClienteInterface cliente = getClienteFromCodice(codiceCliente).orElseThrow();
+	public boolean prenotaEserciziConScheda(Scheda scheda, String codiceCliente) {
+		Collection<Esercizio> esercizi = scheda.getEsercizi();
+		Cliente cliente = getClienteFromCodice(codiceCliente).orElseThrow();
 		
 		if(!esercizi.stream().allMatch(esercizio -> cliente.getAbbonamento().isEsercizioPermesso(esercizio)))
 			return false;
@@ -64,9 +60,8 @@ public final class Palestra implements PalestraInterface {
 		return true;
 	}
 
-	@Override
-	public boolean prenotaEsercizio(EsercizioInterface esercizio, String codiceCliente) {
-		ClienteInterface cliente = getClienteFromCodice(codiceCliente).orElseThrow();
+	public boolean prenotaEsercizio(Esercizio esercizio, String codiceCliente) {
+		Cliente cliente = getClienteFromCodice(codiceCliente).orElseThrow();
 		if(!cliente.getAbbonamento().isEsercizioPermesso(esercizio))
 			return false;
 		
@@ -75,32 +70,26 @@ public final class Palestra implements PalestraInterface {
 		return true;
 	}
 
-	@Override
 	public void notifyClientePostazioneLibera(String codicePostazione, String codiceCliente) {
 		controller.notifyClientePostazioneLibera(codicePostazione, codiceCliente);
 	}
 
-	@Override
-	public double getCostoScheda(SchedaInterface scheda) {
+	public double getCostoScheda(Scheda scheda) {
 		return scheda.calcolaCosto();
 	}
 	
-	@Override
-	public String getInfoScheda(SchedaInterface scheda) {
+	public String getInfoScheda(Scheda scheda) {
 		return scheda.getInfo();
 	}
 
-	@Override
 	public double getPrezzoAbbonamento(Abbonamento abbonamento) {
 		return abbonamento.getPrezzo();
 	}
 
-	@Override
 	public void acquistaAbbonamento(Abbonamento abbonamento, String codiceCliente) {
 		database.setAbbonamentoCliente(abbonamento, codiceCliente);
 	}
 
-	@Override
 	public boolean accessoInPalestra(String codiceCliente) {
 		Optional<Cliente> cliente = database.getCliente(this, codiceCliente);
 		
@@ -111,31 +100,25 @@ public final class Palestra implements PalestraInterface {
 		return true;
 	}
 
-	@Override
 	public void uscitaDallaPalestra(String codiceCliente) {
 		getClienteFromCodice(codiceCliente)
 			.ifPresent(cliente -> clientiInPalestra.remove(cliente));
 	}
 
-	@Override
 	public String getNome() {
 		return nome;
 	}
 
-	@Override
 	public void occupaPostazione(String codicePostazione, String codiceCliente) {
 		getClienteFromCodice(codiceCliente).orElseThrow()
 			.occupaPostazione(codicePostazione);
 	}
 
-	@Override
 	public void rilasciaPostazione(String codicePostazione, String codiceCliente) {
 		getClienteFromCodice(codiceCliente).orElseThrow()
 			.rilasciaPostazione(codicePostazione);
 	}
 	
-	
-	@Override
 	public void rimuoviPrenotazionePostazione(String codicePostazione, String codiceCliente) {
 		getClienteFromCodice(codiceCliente).orElseThrow()
 			.rimuoviPrenotazionePostazione(codicePostazione);

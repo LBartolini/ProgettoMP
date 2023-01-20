@@ -3,21 +3,21 @@ package model.postazioni;
 import java.util.Collection;
 import java.util.Objects;
 
-import model.cliente.ClienteInterface;
-import model.esercizi.EsercizioInterface;
+import model.Cliente;
+import model.esercizi.Esercizio;
 
-public final class PostazioneMultipla implements PostazioneInterface {
+public final class PostazioneMultipla implements Postazione {
 	
 	private static int incrementale = 1;
 	
-	private EsercizioInterface esercizio;
+	private Esercizio esercizio;
 	private int id;
 	private int maxClientiInContemporanea;
-	private Collection<ClienteInterface> clientiAttuali;
-	Collection<ClienteInterface> clientiInAttesa; // package private per fini di test
+	Collection<Cliente> clientiAttuali; // package private ai fini di test
+	Collection<Cliente> clientiInAttesa; // package private per fini di test
 
-	public PostazioneMultipla(EsercizioInterface esercizio, int maxClientiInContemporanea,
-			Collection<ClienteInterface> clientiAttuali, Collection<ClienteInterface> clientiInAttesa) {
+	public PostazioneMultipla(Esercizio esercizio, int maxClientiInContemporanea,
+			Collection<Cliente> clientiAttuali, Collection<Cliente> clientiInAttesa) {
 		
 		this.esercizio = esercizio;
 		this.maxClientiInContemporanea = maxClientiInContemporanea;
@@ -27,7 +27,7 @@ public final class PostazioneMultipla implements PostazioneInterface {
 	}
 
 	@Override
-	public void prenota(ClienteInterface cliente) {
+	public void prenota(Cliente cliente) {
 		clientiInAttesa.add(cliente);
 		
 		if(getPostiDisponibili()>0)
@@ -35,12 +35,12 @@ public final class PostazioneMultipla implements PostazioneInterface {
 	}
 	
 	@Override
-	public void rimuoviPrenotazione(ClienteInterface cliente) {
+	public void rimuoviPrenotazione(Cliente cliente) {
 		clientiInAttesa.remove(cliente);
 	}
 
 	@Override
-	public boolean occupa(ClienteInterface cliente) {
+	public boolean occupa(Cliente cliente) {
 		if(getPostiDisponibili() == 0)
 			return false;
 		
@@ -55,7 +55,7 @@ public final class PostazioneMultipla implements PostazioneInterface {
 	}
 
 	@Override
-	public boolean rilascia(ClienteInterface cliente) {
+	public boolean rilascia(Cliente cliente) {
 		if(!clientiAttuali.contains(cliente))
 			return false;
 		
@@ -70,7 +70,7 @@ public final class PostazioneMultipla implements PostazioneInterface {
 	}
 	
 	@Override
-	public EsercizioInterface getEsercizio() {
+	public Esercizio getEsercizio() {
 		return esercizio;
 	}
 	

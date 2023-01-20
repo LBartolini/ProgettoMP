@@ -1,4 +1,4 @@
-package model.palestra;
+package model;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -9,26 +9,22 @@ import org.junit.Test;
 
 import controller.ControllerMock;
 import model.abbonamenti.AbbonamentoMock;
-import model.cliente.Cliente;
-import model.cliente.ClienteInterface;
 import model.esecuzioni.EsecuzioneASerie;
-import model.esecuzioni.EsecuzioneEsercizioInterface;
+import model.esecuzioni.Esecuzione;
 import model.esercizi.PancaPiana;
 import model.esercizi.RematoreConBilanciere;
 import model.esercizi.RematoreConManubri;
-import model.postazioni.PostazioneInterface;
+import model.postazioni.Postazione;
 import model.postazioni.PostazioneMultipla;
 import model.postazioni.PostazioneSingola;
-import model.scheda.Scheda;
-import model.scheda.SchedaInterface;
 
 public class PalestraTest {
 
 	@Test
 	public void testGetClienteFromCodice() {
-		Collection<ClienteInterface> clientiInPalestra = new ArrayList<>();	
+		Collection<Cliente> clientiInPalestra = new ArrayList<>();	
 		Palestra palestra = new Palestra("test", null, null, null, clientiInPalestra);
-		clientiInPalestra.add(new Cliente(palestra, null, "ABC123", null, null, null, 0, 0));
+		clientiInPalestra.add(new Cliente(palestra, null, "ABC123", null, null, null));
 		
 		assertThat(palestra.getClienteFromCodice("000000"))
 			.isEmpty();
@@ -38,9 +34,9 @@ public class PalestraTest {
 
 	@Test
 	public void testGetPostazioniFromEsercizio() {
-		Collection<PostazioneInterface> postazioni = new ArrayList<>();
-		Collection<PostazioneInterface> postPancaPiana = new ArrayList<>();
-		Collection<PostazioneInterface> postRematoreConManubri = new ArrayList<>();
+		Collection<Postazione> postazioni = new ArrayList<>();
+		Collection<Postazione> postPancaPiana = new ArrayList<>();
+		Collection<Postazione> postRematoreConManubri = new ArrayList<>();
 		Palestra palestra = new Palestra("test", null, null, postazioni, null);
 		
 		postPancaPiana.add(new PostazioneSingola(PancaPiana.getInstance(), null));
@@ -64,9 +60,9 @@ public class PalestraTest {
 	
 	@Test
 	public void testPrenotaEserciziConScheda() {
-		Collection<PostazioneInterface> postazioniPalestra = new ArrayList<>();
-		Collection<PostazioneInterface> postazioniOk = new ArrayList<>();
-		Collection<PostazioneInterface> postazioniNonOk = new ArrayList<>();
+		Collection<Postazione> postazioniPalestra = new ArrayList<>();
+		Collection<Postazione> postazioniOk = new ArrayList<>();
+		Collection<Postazione> postazioniNonOk = new ArrayList<>();
 		
 		postazioniOk.add(new PostazioneSingola(PancaPiana.getInstance(), new ArrayList<>()));
 		postazioniOk.add(new PostazioneMultipla(PancaPiana.getInstance(), 2, new ArrayList<>(), new ArrayList<>()));
@@ -78,19 +74,19 @@ public class PalestraTest {
 		postazioniPalestra.addAll(postazioniOk);
 		postazioniPalestra.addAll(postazioniNonOk);
 		
-		Collection<ClienteInterface> clientiInPalestra = new ArrayList<>();	
+		Collection<Cliente> clientiInPalestra = new ArrayList<>();	
 		
 		ControllerMock controller = new ControllerMock();
 		Palestra palestra = new Palestra("test", controller, null, postazioniPalestra, clientiInPalestra);
 		
-		Collection<PostazioneInterface> postazioniPrenotateCliente = new ArrayList<>();
-		Cliente cliente = new Cliente(palestra, new AbbonamentoMock(true), "ABC123", postazioniPrenotateCliente, null, null, 0, 0);
+		Collection<Postazione> postazioniPrenotateCliente = new ArrayList<>();
+		Cliente cliente = new Cliente(palestra, new AbbonamentoMock(true), "ABC123", postazioniPrenotateCliente, null, null);
 		clientiInPalestra.add(cliente);
 		
-		Collection<EsecuzioneEsercizioInterface> esecuzioni = new ArrayList<>();
+		Collection<Esecuzione> esecuzioni = new ArrayList<>();
 		esecuzioni.add(new EsecuzioneASerie(PancaPiana.getInstance(), 0, 0, 0));
 		esecuzioni.add(new EsecuzioneASerie(RematoreConManubri.getInstance(), 0, 0, 0));
-		SchedaInterface scheda = new Scheda(esecuzioni);
+		Scheda scheda = new Scheda(esecuzioni);
 		
 		assertThat(palestra.prenotaEserciziConScheda(scheda, cliente.getCodiceCliente()))
 			.isTrue();
@@ -105,18 +101,18 @@ public class PalestraTest {
 	
 	@Test
 	public void testPrenotaEserciziConSchedaBadPath() {
-		Collection<ClienteInterface> clientiInPalestra = new ArrayList<>();	
+		Collection<Cliente> clientiInPalestra = new ArrayList<>();	
 		
 		Palestra palestra = new Palestra("test", null, null, null, clientiInPalestra);
 		
-		Collection<PostazioneInterface> postazioniPrenotateCliente = new ArrayList<>();
-		Cliente cliente = new Cliente(palestra, new AbbonamentoMock(false), "ABC123", postazioniPrenotateCliente, null, null, 0, 0);
+		Collection<Postazione> postazioniPrenotateCliente = new ArrayList<>();
+		Cliente cliente = new Cliente(palestra, new AbbonamentoMock(false), "ABC123", postazioniPrenotateCliente, null, null);
 		clientiInPalestra.add(cliente);
 		
-		Collection<EsecuzioneEsercizioInterface> esecuzioni = new ArrayList<>();
+		Collection<Esecuzione> esecuzioni = new ArrayList<>();
 		esecuzioni.add(new EsecuzioneASerie(PancaPiana.getInstance(), 0, 0, 0));
 		esecuzioni.add(new EsecuzioneASerie(RematoreConManubri.getInstance(), 0, 0, 0));
-		SchedaInterface scheda = new Scheda(esecuzioni);
+		Scheda scheda = new Scheda(esecuzioni);
 		
 		assertThat(palestra.prenotaEserciziConScheda(scheda, cliente.getCodiceCliente()))
 			.isFalse();
@@ -124,9 +120,9 @@ public class PalestraTest {
 	
 	@Test
 	public void testPrenotaEsercizio() {
-		Collection<PostazioneInterface> postazioniPalestra = new ArrayList<>();
-		Collection<PostazioneInterface> postazioniOk = new ArrayList<>();
-		Collection<PostazioneInterface> postazioniNonOk = new ArrayList<>();
+		Collection<Postazione> postazioniPalestra = new ArrayList<>();
+		Collection<Postazione> postazioniOk = new ArrayList<>();
+		Collection<Postazione> postazioniNonOk = new ArrayList<>();
 		
 		postazioniOk.add(new PostazioneSingola(PancaPiana.getInstance(), new ArrayList<>()));
 		postazioniOk.add(new PostazioneSingola(PancaPiana.getInstance(), new ArrayList<>()));
@@ -136,13 +132,13 @@ public class PalestraTest {
 		postazioniPalestra.addAll(postazioniOk);
 		postazioniPalestra.addAll(postazioniNonOk);
 		
-		Collection<ClienteInterface> clientiInPalestra = new ArrayList<>();	
+		Collection<Cliente> clientiInPalestra = new ArrayList<>();	
 		
 		ControllerMock controller = new ControllerMock();
 		Palestra palestra = new Palestra("test", controller, null, postazioniPalestra, clientiInPalestra);
 		
-		Collection<PostazioneInterface> postazioniPrenotateCliente = new ArrayList<>();
-		Cliente cliente = new Cliente(palestra, new AbbonamentoMock(true), "ABC123", postazioniPrenotateCliente, null, null, 0, 0);
+		Collection<Postazione> postazioniPrenotateCliente = new ArrayList<>();
+		Cliente cliente = new Cliente(palestra, new AbbonamentoMock(true), "ABC123", postazioniPrenotateCliente, null, null);
 		clientiInPalestra.add(cliente);
 		
 		assertThat(palestra.prenotaEsercizio(PancaPiana.getInstance(), cliente.getCodiceCliente()))
@@ -158,9 +154,9 @@ public class PalestraTest {
 	
 	@Test
 	public void testPrenotaEsercizioBadPath() {
-		Collection<PostazioneInterface> postazioniPalestra = new ArrayList<>();
-		Collection<PostazioneInterface> postazioniOk = new ArrayList<>();
-		Collection<PostazioneInterface> postazioniNonOk = new ArrayList<>();
+		Collection<Postazione> postazioniPalestra = new ArrayList<>();
+		Collection<Postazione> postazioniOk = new ArrayList<>();
+		Collection<Postazione> postazioniNonOk = new ArrayList<>();
 		
 		postazioniOk.add(new PostazioneMultipla(PancaPiana.getInstance(), 2, new ArrayList<>(), new ArrayList<>()));
 		postazioniOk.add(new PostazioneSingola(PancaPiana.getInstance(), new ArrayList<>()));
@@ -170,12 +166,12 @@ public class PalestraTest {
 		postazioniPalestra.addAll(postazioniOk);
 		postazioniPalestra.addAll(postazioniNonOk);
 		
-		Collection<ClienteInterface> clientiInPalestra = new ArrayList<>();	
+		Collection<Cliente> clientiInPalestra = new ArrayList<>();	
 		
 		Palestra palestra = new Palestra("test", null, null, postazioniPalestra, clientiInPalestra);
 		
-		Collection<PostazioneInterface> postazioniPrenotateCliente = new ArrayList<>();
-		Cliente cliente = new Cliente(palestra, new AbbonamentoMock(false), "ABC123", postazioniPrenotateCliente, null, null, 0, 0);
+		Collection<Postazione> postazioniPrenotateCliente = new ArrayList<>();
+		Cliente cliente = new Cliente(palestra, new AbbonamentoMock(false), "ABC123", postazioniPrenotateCliente, null, null);
 		clientiInPalestra.add(cliente);
 		
 		assertThat(palestra.prenotaEsercizio(PancaPiana.getInstance(), cliente.getCodiceCliente()))

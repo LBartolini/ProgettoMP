@@ -3,7 +3,7 @@ package model.abbonamenti;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import model.esercizi.EsercizioInterface;
+import model.esercizi.Esercizio;
 
 public class AbbonamentoMock implements Abbonamento {
 
@@ -19,12 +19,12 @@ public class AbbonamentoMock implements Abbonamento {
 	}
 
 	@Override
-	public Collection<EsercizioInterface> getEserciziPermessi() {
+	public Collection<Esercizio> getEserciziPermessi() {
 		return new ArrayList<>();
 	}
 
 	@Override
-	public boolean isEsercizioPermesso(EsercizioInterface esercizio) {
+	public boolean isEsercizioPermesso(Esercizio esercizio) {
 		return valore;
 	}
 

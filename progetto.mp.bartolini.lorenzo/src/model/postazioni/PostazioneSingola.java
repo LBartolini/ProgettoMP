@@ -3,21 +3,21 @@ package model.postazioni;
 import java.util.Collection;
 import java.util.Objects;
 
-import model.cliente.ClienteInterface;
-import model.esercizi.EsercizioInterface;
+import model.Cliente;
+import model.esercizi.Esercizio;
 
 import java.util.Optional;
 
-public final class PostazioneSingola implements PostazioneInterface {
+public final class PostazioneSingola implements Postazione {
 	
 	private static int incrementale = 1;
 	
-	private Optional<ClienteInterface> clienteAttuale;
-	Collection<ClienteInterface> clientiInAttesa; // package private ai fini di test
-	private EsercizioInterface esercizio;
+	Optional<Cliente> clienteAttuale; // package private ai fini di test
+	Collection<Cliente> clientiInAttesa; // package private ai fini di test
+	private Esercizio esercizio;
 	private int id;
 
-	public PostazioneSingola(EsercizioInterface esercizio, Collection<ClienteInterface> clientiInAttesa) {
+	public PostazioneSingola(Esercizio esercizio, Collection<Cliente> clientiInAttesa) {
 		this.esercizio = esercizio;
 		clienteAttuale = Optional.empty();
 		this.clientiInAttesa = clientiInAttesa;
@@ -25,7 +25,7 @@ public final class PostazioneSingola implements PostazioneInterface {
 	}
 
 	@Override
-	public void prenota(ClienteInterface cliente) {
+	public void prenota(Cliente cliente) {
 		clientiInAttesa.add(cliente);
 		
 		if(getPostiDisponibili()>0)
@@ -33,12 +33,12 @@ public final class PostazioneSingola implements PostazioneInterface {
 	}
 	
 	@Override
-	public void rimuoviPrenotazione(ClienteInterface cliente) {
+	public void rimuoviPrenotazione(Cliente cliente) {
 		clientiInAttesa.remove(cliente);
 	}
 
 	@Override
-	public boolean occupa(ClienteInterface cliente) {
+	public boolean occupa(Cliente cliente) {
 		if(getPostiDisponibili() == 0)
 			return false;
 		
@@ -52,7 +52,7 @@ public final class PostazioneSingola implements PostazioneInterface {
 	}
 
 	@Override
-	public boolean rilascia(ClienteInterface cliente) {
+	public boolean rilascia(Cliente cliente) {
 		if(clienteAttuale.isEmpty())
 			return false;
 		if (!clienteAttuale.orElseThrow().equals(cliente))
@@ -69,7 +69,7 @@ public final class PostazioneSingola implements PostazioneInterface {
 	}
 
 	@Override
-	public EsercizioInterface getEsercizio() {
+	public Esercizio getEsercizio() {
 		return esercizio;
 	}
 	

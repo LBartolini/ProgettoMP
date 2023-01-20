@@ -1,4 +1,4 @@
-package model.cliente;
+package model;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -6,26 +6,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import model.abbonamenti.Abbonamento;
-import model.esercizi.EsercizioInterface;
-import model.palestra.PalestraInterface;
-import model.postazioni.PostazioneInterface;
+import model.esercizi.Esercizio;
+import model.postazioni.Postazione;
 
-public final class Cliente implements ClienteInterface {
+public final class Cliente {
 	
 	private String codiceCliente;
 	private String nome, cognome;
-	private int eta;
-	private double peso;
-	private PalestraInterface palestra;
+	private Palestra palestra;
 	private Abbonamento abbonamento;
-	private Collection<PostazioneInterface> postazioniPrenotate;
-	private Optional<PostazioneInterface> postazioneAttuale;
+	private Collection<Postazione> postazioniPrenotate;
+	private Optional<Postazione> postazioneAttuale;
 
-	public Cliente(PalestraInterface palestra, 
+	public Cliente(Palestra palestra, 
 			Abbonamento abbonamento, 
 			String codiceCliente, 
-			Collection<PostazioneInterface> postazioniPrenotate,
-			String nome, String cognome, int eta, double peso) {
+			Collection<Postazione> postazioniPrenotate,
+			String nome, String cognome) {
 		
 		this.palestra = palestra;
 		this.abbonamento = abbonamento;
@@ -34,30 +31,26 @@ public final class Cliente implements ClienteInterface {
 		this.postazioneAttuale = Optional.empty();
 		this.nome = nome;
 		this.cognome = cognome;
-		this.eta = eta;
-		this.peso = peso;
 	}
 
-	@Override
-	public void notificaPostazioneLibera(PostazioneInterface postazione) {
+	public void notificaPostazioneLibera(Postazione postazione) {
 		palestra.notifyClientePostazioneLibera(postazione.getCodicePostazione(), getCodiceCliente());
 	}
 	
-	private Optional<PostazioneInterface> getPostazionefromCodice(String codice) {
+	private Optional<Postazione> getPostazionefromCodice(String codice) {
 		return postazioniPrenotate.stream()
 			.filter(postazione -> postazione.getCodicePostazione().equals(codice))
 			.findAny();
 	}
 	
-	private Collection<PostazioneInterface> getPostazioniFromEsercizio(EsercizioInterface esercizio){
+	private Collection<Postazione> getPostazioniFromEsercizio(Esercizio esercizio){
 		return postazioniPrenotate.stream()
 				.filter(postazione -> postazione.getEsercizio().equals(esercizio))
 				.collect(Collectors.toList());
 	}
 	
-	@Override
 	public boolean occupaPostazione(String codicePostazione) {
-		PostazioneInterface postazioneDaOccupare = getPostazionefromCodice(codicePostazione).orElseThrow();
+		Postazione postazioneDaOccupare = getPostazionefromCodice(codicePostazione).orElseThrow();
 		if(postazioneDaOccupare.occupa(this)) {
 			postazioneAttuale = Optional.of(postazioneDaOccupare);
 			getPostazioniFromEsercizio(postazioneDaOccupare.getEsercizio())
@@ -67,55 +60,38 @@ public final class Cliente implements ClienteInterface {
 		return false;
 	}
 	
-	@Override
-	public void prenotaPostazione(PostazioneInterface postazione) {
+	public void prenotaPostazione(Postazione postazione) {
 		if(!postazioniPrenotate.contains(postazione)) {
 			postazioniPrenotate.add(postazione);
 			postazione.prenota(this);
 		}	
 	}
 
-	@Override
 	public void rimuoviPrenotazionePostazione(String codicePostazione) {
-		PostazioneInterface postazione = getPostazionefromCodice(codicePostazione).orElseThrow(); 
+		Postazione postazione = getPostazionefromCodice(codicePostazione).orElseThrow(); 
 		postazioniPrenotate.remove(postazione);
 		postazione.rimuoviPrenotazione(this);
 	}
 	
-	@Override
 	public void rilasciaPostazione(String codicePostazione) {
 		postazioneAttuale.orElseThrow().rilascia(this);
 		postazioneAttuale = Optional.empty();
 	}
 	
-	@Override
 	public String getCodiceCliente() {
 		return codiceCliente;
 	}
 	
-	@Override
 	public Abbonamento getAbbonamento() {
 		return abbonamento;
 	}
 
-	@Override
 	public String getNome() {
 		return nome;
 	}
 
-	@Override
 	public String getCognome() {
 		return cognome;
-	}
-
-	@Override
-	public int getEta() {
-		return eta;
-	}
-
-	@Override
-	public double getPeso() {
-		return peso;
 	}
 
 	@Override
