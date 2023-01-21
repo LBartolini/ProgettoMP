@@ -31,6 +31,8 @@ public class SchedaTest {
 		
 		assertThat(scheda.getEsercizi())
 			.containsExactlyInAnyOrder(PancaPiana.getInstance(), RematoreConManubri.getInstance());
+		assertThat(scheda.getEsercizi().size())
+			.isEqualTo(2);
 	}
 	
 	@Test

@@ -48,10 +48,8 @@ public final class PostazioneMultipla implements Postazione {
 			return false;
 		
 		cliente.rimuoviPrenotazionePostazione(getCodicePostazione());
-		rimuoviPrenotazione(cliente);
 		clientiAttuali.add(cliente);
 		return true;
-		
 	}
 
 	@Override

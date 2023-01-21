@@ -141,17 +141,19 @@ public class PostazioneTest {
 		Cliente cliente2 = new Cliente(p, null, "B", new ArrayList<>(), null, null);
 		Cliente cliente3 = new Cliente(p, null, "C", new ArrayList<>(), null, null);
 		
-		cliente.prenotaPostazione(postazione);
-		cliente2.prenotaPostazione(postazione);
-		cliente3.prenotaPostazione(postazione);
+		cliente.prenotaPostazione(postazione); // prima notifica
+		cliente2.prenotaPostazione(postazione); // seconda notifica
 		
 		cliente.occupaPostazione(postazione.getCodicePostazione());
-		cliente.rilasciaPostazione(postazione.getCodicePostazione());
+		
+		cliente3.prenotaPostazione(postazione);
+		
+		cliente.rilasciaPostazione(postazione.getCodicePostazione()); // terza e quarta notifica
 		
 		assertThat(postazione.clienteAttuale.orElse(null))
 			.isNull();
 		assertThat(controller.notifiche)
-			.isEqualTo(5);
+			.isEqualTo(4);
 	}
 	
 	@Test
@@ -166,17 +168,18 @@ public class PostazioneTest {
 		
 		cliente.prenotaPostazione(postazione);
 		cliente2.prenotaPostazione(postazione);
-		cliente3.prenotaPostazione(postazione);
 		
 		cliente.occupaPostazione(postazione.getCodicePostazione());
 		cliente2.occupaPostazione(postazione.getCodicePostazione());
+		
+		cliente3.prenotaPostazione(postazione);
 		
 		cliente.rilasciaPostazione(postazione.getCodicePostazione());
 		
 		assertThat(postazione.clientiAttuali)
 			.containsExactly(cliente2);
 		assertThat(controller.notifiche)
-			.isEqualTo(4);
+			.isEqualTo(3);
 	}
 
 }
