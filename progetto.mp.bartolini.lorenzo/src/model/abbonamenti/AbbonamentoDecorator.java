@@ -33,7 +33,7 @@ public abstract class AbbonamentoDecorator implements Abbonamento {
 	
 	@Override
 	public final boolean isEsercizioPermesso(Esercizio esercizio) {
-		if(getEserciziPermessi().contains(esercizio))
+		if(getEserciziLocali().contains(esercizio))
 			return true;
 		
 		return abbonamento.isEsercizioPermesso(esercizio);

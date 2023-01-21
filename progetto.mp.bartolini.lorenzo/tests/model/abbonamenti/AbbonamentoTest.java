@@ -24,6 +24,19 @@ public class AbbonamentoTest {
 		
 		assertThat(abbonamento.isEsercizioPermesso(PancaPiana.getInstance()))
 			.isFalse();
+		
+		abbonamento = new PacchettoPetto(abbonamento);
+		
+		assertThat(abbonamento.isEsercizioPermesso(RematoreConBilanciere.getInstance()))
+		.isTrue();
+	
+		assertThat(abbonamento.isEsercizioPermesso(RematoreConManubri.getInstance()))
+			.isTrue();
+	
+		assertThat(abbonamento.isEsercizioPermesso(PancaPiana.getInstance()))
+			.isTrue();
+	
+		
 	}
 	
 	@Test
