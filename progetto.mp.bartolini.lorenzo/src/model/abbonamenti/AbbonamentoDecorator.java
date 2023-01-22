@@ -1,6 +1,7 @@
 package model.abbonamenti;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -12,6 +13,7 @@ public abstract class AbbonamentoDecorator implements Abbonamento {
 	private double prezzo;
 	
 	protected AbbonamentoDecorator(Abbonamento abbonamento, double prezzo) {
+		Objects.requireNonNull(abbonamento, "L'oggetto decorato non può essere null");
 		this.abbonamento = abbonamento;
 		this.prezzo = prezzo;
 	}

@@ -68,5 +68,10 @@ public class AbbonamentoTest {
 			.isEqualTo(PacchettoSchiena.PREZZO+PacchettoPetto.PREZZO);
 		
 	}
+	
+	@Test
+	public void testDecorazioneComponenteNull() {
+		assertThatThrownBy(() -> new PacchettoPetto(null)).isInstanceOf(NullPointerException.class);
+	}
 
 }
